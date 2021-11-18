@@ -26,15 +26,17 @@
         <h2>AWS REKOGNITION</h2>
         <div class="col-6 ">
             <div>
-                <span>Upload hình ảnh: </span>
-                <form method="post" action="/save-image" enctype="multipart/form-data">
-                    <input id="imageInput" type="file" name="image" />
-                    <button>Submit</button>
-                </form method="post" action="/save-image" enctype="multipart/form-data">
-                <img id="image" height="200" width="200" />
+                <span class="labelupload">Upload hình ảnh: </span>
+                <input id="imageFace" type="file" name="image" />
+                <button id="btnDetectLabel">Detect Label</button>
+                <button id="btnDetect" >Detect Face</button>
+                <div id="image-container">
+                    <img id="image" height="200" width="200" />
+                    <div id="boudiry"> </div>
+                </div>             
             </div>
         </div>
-        <div class="col-6" >
+        <div class="col-6">
             <div>
                 <h5>Kết quả hiển thị: </h5>
                 <div id="data">
@@ -43,7 +45,9 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+
     <script src="script.js"></script>
 </body>
 

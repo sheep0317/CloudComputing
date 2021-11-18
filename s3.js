@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 aws.config.update({
-    accessKeyId: 'ASIAQQK3445LJAAY6FXL',
-    secretAccessKey: 'RtJOm1UR4X4QGWZJw5glV5lYSJ4zR5S9z8vFggv2',
-    sessionToken: 'FwoGZXIvYXdzEJ7//////////wEaDCTji3CN9+NkuzvNESLPARDroAlOdeDT9WDw6pIpuxYqwaxaGkv9+OooNxY55lWFkWGFsKUm7pMzCZ+F2B66cdnMk9gLvE6cxIqxvcdyJlHcuU+lS/0HlPPnoF8djFZI4tU76xez1FvhKy/gf1Vjhcam/fQXquaocZ5Qlb/cN6yNcwjOB4T74MJF5Dkr632dOOY7z4kLtOK9Fzq38UzbGBWo+II5Bd5Fz4nR7qBKBeRlqXL+HINbyyncIjxpy4IoOGgMhcUukbWQjDHJJop+ftn34l94tg8F2zCW3IaMyiiu6r6MBjItxobljGD6EI6Yai2lMSkdBkDregmxGQZJfVui6vfsROn3zJzfIggFzB3gp/tB',
+    accessKeyId: 'ASIAQQK3445LN75ELYOE',
+    secretAccessKey: '3Iwcdd0ha0fk0Hxa+9GL/UBgK+tfWynu2PU0hPbS',
+    sessionToken: 'FwoGZXIvYXdzEAwaDFoXYpmQnJi1yeKQQSLPAX/6UhztpwZKOc7ZVd44WDw07npEPdJkX6MWsLb8ibHfMaKE4XqYB9PyGKzTgbDXzc+1iXh566ELh7U1w6/0WJWnu05fETc5dHLRCqzKjd8DLxafJwgMBmNI3wkCfXi0lQS0YH5PAoIXi5XW+ISalDXb/DMIVKus+KGrgfYIlOti3mHxcLn/pGteQcw5mVQffeYXnHp12dWeibQKPQOcNh+3/xmbYUD/WGQkvLXCPXJUrVLL01bLwInwb9+kzW9heu1Uy55AFXkCCYfM6yWRCCiz/9aMBjIt8Y+2+4MAE5OxHp6SrPMg86BU29T4/iKGOwLgTY5RWsBzLw+iVn63giY7l2lf',
     region: 'us-east-1',
     signatureVersion: 'v4',
 });
@@ -44,7 +44,7 @@ const upload = multer({
 })
 
 const rekognition = new aws.Rekognition();
-app.post("/save-image", upload.array("image", 1), (req, res) => {
+app.post("/detectLabel", upload.array("image", 1), (req, res) => {
     //res.redirect(req.file.location);
     //res.send({ file: req.file });
     var params = {
@@ -61,6 +61,36 @@ app.post("/save-image", upload.array("image", 1), (req, res) => {
 	rekognition.detectLabels(params, function (err, data) {
 		if (err) console.log(err, err.stack);
 		else res.send({data: data});
+	});
+})
+
+app.post("/detectFace", upload.array("image", 1), (req, res) => {
+    //res.redirect(req.file.location);
+    //res.send({ file: req.file });
+    var params = {
+		//CollectionId: "childs",
+		//DetectionAtributes: [],
+		Image: {
+			S3Object: {
+				Bucket: 'rekognitionbucket18',
+				Name: req.file,
+			},
+		},
+		//MaxLabels: 5,
+		//MinConfidence: 80,
+	};
+	console.log(req.file);
+	rekognition.detectFaces(params, function (err, data) {
+		if (err) console.log(err, err.stack);
+		
+		else{
+			
+			//data1 = data1[0].BoundingBox;
+			//console.log(data);
+			res.send({data: data});
+		} 
+	
+		//else console.log(JSON.stringify(data, null, '\t'));;
 	});
 })
 
