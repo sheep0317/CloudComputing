@@ -8,6 +8,12 @@ h2{
     display: block;
     margin-bottom: 5px;
 }
+.title {
+    background-color: #52C6C6;
+    height: 70px;
+    margin-top: 15px;
+    padding-top: 15px;
+}
 .col-6{
     background-color: #F0F0F0;
     border: 1px solid black;

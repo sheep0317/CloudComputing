@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 aws.config.update({
-    accessKeyId: 'ASIAQQK3445LN75ELYOE',
-    secretAccessKey: '3Iwcdd0ha0fk0Hxa+9GL/UBgK+tfWynu2PU0hPbS',
-    sessionToken: 'FwoGZXIvYXdzEAwaDFoXYpmQnJi1yeKQQSLPAX/6UhztpwZKOc7ZVd44WDw07npEPdJkX6MWsLb8ibHfMaKE4XqYB9PyGKzTgbDXzc+1iXh566ELh7U1w6/0WJWnu05fETc5dHLRCqzKjd8DLxafJwgMBmNI3wkCfXi0lQS0YH5PAoIXi5XW+ISalDXb/DMIVKus+KGrgfYIlOti3mHxcLn/pGteQcw5mVQffeYXnHp12dWeibQKPQOcNh+3/xmbYUD/WGQkvLXCPXJUrVLL01bLwInwb9+kzW9heu1Uy55AFXkCCYfM6yWRCCiz/9aMBjIt8Y+2+4MAE5OxHp6SrPMg86BU29T4/iKGOwLgTY5RWsBzLw+iVn63giY7l2lf',
+    accessKeyId: 'ASIAQQK3445LBALZU2IO',
+    secretAccessKey: 'wvBAAYw+kdtiL3KQUFWBMsHULYig516TZK82SQx/',
+    sessionToken: 'FwoGZXIvYXdzEBMaDPV3z7iUsZVx8Gbb7CLPAbbVZpRxuu4tUj8nLi5q/WN1OeAkck6Nj5dSwiPvoxChbRgfr8lLuLDuAsKXry9LVNkgmmpk6Xq37la0qh1CNswtIG1blV+KxJVCWBDwKIuBtsgoKGkkbjpUAmV6zV+V4p0ah8zizdP922/QVrl8Q8q5k2FXlP6PKiKNa3C9zU96ntPyw8T58Mfy60R7Vp7zmVZCQaqhXUze7ySYT5U1SRWaBgc1iOXQxWVR+jkrjbEIDvZQozPvwBo+85I+Y7+xxlzrJ6J9VCniialzpamlJCiLwtiMBjItIJT87HUDexU3wq9iEQKYNCQLhS74A0ChjAkNzS6yYoGsMvCIwKDiwpEXzD/P',
     region: 'us-east-1',
     signatureVersion: 'v4',
 });
@@ -65,32 +65,21 @@ app.post("/detectLabel", upload.array("image", 1), (req, res) => {
 })
 
 app.post("/detectFace", upload.array("image", 1), (req, res) => {
-    //res.redirect(req.file.location);
-    //res.send({ file: req.file });
     var params = {
-		//CollectionId: "childs",
-		//DetectionAtributes: [],
 		Image: {
 			S3Object: {
 				Bucket: 'rekognitionbucket18',
 				Name: req.file,
 			},
 		},
-		//MaxLabels: 5,
-		//MinConfidence: 80,
 	};
 	console.log(req.file);
 	rekognition.detectFaces(params, function (err, data) {
 		if (err) console.log(err, err.stack);
 		
 		else{
-			
-			//data1 = data1[0].BoundingBox;
-			//console.log(data);
 			res.send({data: data});
 		} 
-	
-		//else console.log(JSON.stringify(data, null, '\t'));;
 	});
 })
 
@@ -98,4 +87,4 @@ app.post("/detectFace", upload.array("image", 1), (req, res) => {
 
 app.use(express.static("public"));
 
-app.listen(9000,() => console.log('Server is running on port 9000'));
+app.listen(3000,() => console.log('Server is running on port 3000'));
