@@ -55,14 +55,14 @@ img{
     padding: 0;
     height: auto;
 }
-#boudiry{
+.boudiry{
     position: absolute;
     border: 2px solid red;
     height: 50px;
     width: 50px;
     top: 10px;
     left: 50px;
-    background-color: transparent;
+    background-color: transparent!important;
     display: none;
 
 }

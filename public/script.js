@@ -24,13 +24,13 @@ document.getElementById("btnDetectLabel").addEventListener("click", (e) => {
         console.log(result);
         var data = document.getElementById("data");
         data.innerHTML = ""
-        for(let i =0 ; i< result.length; i++){
+        for (let i = 0; i < result.length; i++) {
             data.innerHTML += `<span> Confidence: ${result[i].Confidence} </span><br>
                                 <span> Name: ${result[i].Name}</span>`
-            if(result[i].Parents.length != 0){
+            if (result[i].Parents.length != 0) {
                 data.innerHTML += `<br><span> Parents: </span>`
             }
-            for(let j = 0 ; j<result[i].Parents.length; j++){
+            for (let j = 0; j < result[i].Parents.length; j++) {
                 data.innerHTML += `<span>${result[i].Parents[j].Name} , </span> `
             }
             data.innerHTML += `<br><br>`
@@ -38,7 +38,7 @@ document.getElementById("btnDetectLabel").addEventListener("click", (e) => {
     });
 })
 
-document.getElementById("btnDetect").addEventListener("click", (e) => {
+document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
     e.preventDefault();
     // let file = docsument.getElementsByTagName("input")[0].files[0];
     const fd = new FormData();
@@ -56,11 +56,44 @@ document.getElementById("btnDetect").addEventListener("click", (e) => {
         const boudingbox = res.data.data.FaceDetails[0].BoundingBox;
         var image = document.getElementById("image")
         document.getElementById("boudiry").style.display = "block"
-        document.getElementById("boudiry").style.width = boudingbox.Width  * image.width + 'px';
+        document.getElementById("boudiry").style.width = boudingbox.Width * image.width + 'px';
         document.getElementById("boudiry").style.height = boudingbox.Height * image.height + 'px';
         document.getElementById("boudiry").style.top = boudingbox.Top * image.height + 'px';
         document.getElementById("boudiry").style.left = boudingbox.Left * image.width + 'px';
     });
 })
 
-// var image = document.getElementById("image")
+document.getElementById("btnDetectText").addEventListener("click", (e) => {
+    e.preventDefault();
+    // let file = docsument.getElementsByTagName("input")[0].files[0];
+    const fd = new FormData();
+
+    fd.append("image", fileImage);
+    axios({
+        url: "/detectText",
+        method: "post",
+        headers: {
+            'content-type': 'multipart/form-data'
+        },
+        data: fd,
+    }).then(res => {
+        var result = res.data.data.TextDetections;
+        console.log(result);
+        var data = document.getElementById("data");
+        var boudiry = document.getElementById("image-container");
+        data.innerHTML = ""
+        for (let i = 0; i < result.length; i++) {
+            var geometry = result[i].Geometry.BoundingBox;
+            data.innerHTML += `<span> DetectText: ${result[i].DetectedText} </span><br>
+                                <span> Type: ${result[i].Type}</span>`
+            data.innerHTML += `<br><br>`
+            var image = document.getElementById("image")
+            boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                            height:${geometry.Height * image.height}px; 
+                                                            width: ${geometry.Width * image.width}px;
+                                                            top: ${geometry.Top * image.height}px; 
+                                                            left: ${geometry.Left * image.width}px;"> </div> `
+        }
+    });
+})
+
