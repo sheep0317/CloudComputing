@@ -55,11 +55,12 @@ document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
         console.log(res.data.data.FaceDetails[0].BoundingBox);
         const boudingbox = res.data.data.FaceDetails[0].BoundingBox;
         var image = document.getElementById("image")
-        document.getElementById("boudiry").style.display = "block"
-        document.getElementById("boudiry").style.width = boudingbox.Width * image.width + 'px';
-        document.getElementById("boudiry").style.height = boudingbox.Height * image.height + 'px';
-        document.getElementById("boudiry").style.top = boudingbox.Top * image.height + 'px';
-        document.getElementById("boudiry").style.left = boudingbox.Left * image.width + 'px';
+        var boudiry = document.getElementById("image-container");
+        boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                            height:${boudingbox.Height * image.height}px; 
+                                                            width: ${boudingbox.Width * image.width}px;
+                                                            top: ${boudingbox.Top * image.height}px; 
+                                                            left: ${boudingbox.Left * image.width}px;"> </div> `
     });
 })
 
