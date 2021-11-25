@@ -7,20 +7,36 @@ AWS.config.update({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     sessionToken: process.env.AWS_SESSION_TOKEN
 });
-var NAMEFILE = '053.jpg';
+var NAMEFILE = 'XTN.jpg';
 var BUCKET = 'kalsitbucket';
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     sessionToken: process.env.AWS_SESSION_TOKEN
 });
-const params = {
+const paramsUpload = {
     Bucket: BUCKET,
     Key: NAMEFILE,
-    Body: fs.createReadStream('./' + NAMEFILE),
+    Body: fs.createReadStream('G:\\XTN2021\\Ngay1\\ Export\\DSC_0399.jpg'),
 }
-s3.upload(params, function (err, data) {
+s3.upload(paramsUpload, function (err, data) {
     console.log(err, data);
+    var params = {
+        Image: {
+            S3Object: {
+                Bucket: BUCKET,
+                Name: NAMEFILE
+            }
+        },
+        MaxLabels: 10,
+        MinConfidence: 70
+    };
+    const rekognition = new AWS.Rekognition();
+    rekognition.detectLabels(params, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data); // successful response
+    })
+    
 });
 /*
 const uploadFile = (fileName) => {
@@ -45,23 +61,7 @@ const uploadFile = (fileName) => {
 */
 
 //done
-/*
-var params = {
-    Image: {
-        S3Object: {
-            Bucket: "kalsitbucket",
-            Name: namefile
-        }
-    },
-    MaxLabels: 10,
-    MinConfidence: 70
-};
-console.log("START");
-const rekognition = new AWS.Rekognition();
-rekognition.detectLabels(params, function (err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else console.log(data); // successful response
-})
+
 
 console.log("END");
-*/
+

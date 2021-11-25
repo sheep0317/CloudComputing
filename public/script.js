@@ -52,15 +52,23 @@ document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
         },
         data: fd,
     }).then(res => {
-        console.log(res.data.data.FaceDetails[0].BoundingBox);
-        const boudingbox = res.data.data.FaceDetails[0].BoundingBox;
+        
+        const result = res.data.data.FaceDetails;
+        console.log(result);
         var image = document.getElementById("image")
         var boudiry = document.getElementById("image-container");
-        boudiry.innerHTML += `<div class="boudiry" style="display: block;
-                                                            height:${boudingbox.Height * image.height}px; 
-                                                            width: ${boudingbox.Width * image.width}px;
-                                                            top: ${boudingbox.Top * image.height}px; 
-                                                            left: ${boudingbox.Left * image.width}px;"> </div> `
+
+        data.innerHTML = ""
+        for (let i = 0; i < result.length; i++) {
+            var box = result[i].BoundingBox;
+            var image = document.getElementById("image")
+            boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                            height:${box.Height * image.height}px; 
+                                                            width: ${box.Width * image.width}px;
+                                                            top: ${box.Top * image.height}px; 
+                                                            left: ${box.Left * image.width}px;
+                                                            border: 2px solid green"> </div> `
+        }
     });
 })
 

@@ -1,4 +1,4 @@
-require("dotenv").config;
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const multerS3 = require("multer-s3");
@@ -9,15 +9,16 @@ const cors = require('cors');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
 aws.config.update({
-    accessKeyId: 'ASIAQQK3445LEDLIHK5G',
-    secretAccessKey: '2iD+eHjlRrVDfoD2hBn25Sf3v2nix8G1K2d4Wt36',
-    sessionToken: 'FwoGZXIvYXdzEKf//////////wEaDAbD9t99Ag8ou31+MyLPAXfjgdrcGxEiDX3r7OvXbPNkHCSZv8bhJOPqGvnlvkrHIh7qADCreZ+VnDqvhjiQxcudUg5Rf2OeN99cZIZ1TZazf362XXW2YK2OVOzHvkgFBusrM6ldT4KUCWHYFg1Zb+SLetJ0rW8hlIIYye4QF6xZuVaPBHaIHd/JspEc773Wl3/DZ/5IQ5n1sDhPdV0Id9Ld1LJbRzWW9d41LPZ2obIwnhr1qx6GOkLWKQrzO9a+lR13Q4iuE+bkhlonYqBG2EZOBtkDF2KwN7pwit1W4CjL8PiMBjIt6y1wEm9KKrzaENrigemLvXZd63OYpgMjOP5AfBpxN/hWxkJfROK95yQhKK7K',
+    accessKeyId: 'ASIAQQK3445LITPXV44G',
+    secretAccessKey: 'viIbRrS2hjJd/kLZPrC9MD/XOYutJZegElKDbI8t',
+    sessionToken: 'FwoGZXIvYXdzEL3//////////wEaDOjiAxgMBcqe8RX/UyLPAVqp/Fn9496nEx6uJp9FElP9M0y/ouNGNoLZiyDmBAdjk+5gTLFqrgiczVuuDLgsSt25JKxBLdHApwZUlSr4xLSI4hFfcH/XjgEffa2KP8t9+wE8Rvv8rGnmxvgChNkLOUlu3pwB/495+1tN2nP6q+iew5TVK6yEanlc2Te5neJuiBCfqp1rEH24zCTo73JFe2k0fQlQA+MeKW3jpN+LjwculepsQkTIvLBd8BbuPfL+N0PrmTLm7yF92KgO+1SZzqXYgQbJJxskMB5ptB6U0Sii5v2MBjItHon9cW7HSb4XZAKfjCifuPlqK4emZr/9OCGsic5EXuLNt2q/v1yNK00XcN/v',
     region: 'us-east-1',
     signatureVersion: 'v4',
 });
+
 const s3 = new aws.S3({});
+const bucketName = 'rekognitionbucket18';
 
 const upload = multer({
     fileFilter: (req, file, cb) => {
@@ -35,7 +36,7 @@ const upload = multer({
     storage: multerS3({
         acl:'public-read',
         s3:s3,
-        bucket: 'rekognitionbucket18',
+        bucket: bucketName,
         key: function (req, file, cb) {
 			req.file = Date.now() + file.originalname;
 			cb(null, Date.now() + file.originalname);
@@ -50,14 +51,14 @@ app.post("/detectLabel", upload.array("image", 1), (req, res) => {
     var params = {
 		Image: {
 			S3Object: {
-				Bucket: 'rekognitionbucket18',
+				Bucket: bucketName,
 				Name: req.file,
 			},
 		},
 		MaxLabels: 5,
 		MinConfidence: 80,
 	};
-	console.log(req.file);
+	//console.log(req.file);
 	rekognition.detectLabels(params, function (err, data) {
 		if (err) console.log(err, err.stack);
 		else res.send({data: data});
@@ -68,7 +69,7 @@ app.post("/detectFace", upload.array("image", 1), (req, res) => {
     var params = {
 		Image: {
 			S3Object: {
-				Bucket: 'rekognitionbucket18',
+				Bucket: bucketName,
 				Name: req.file,
 			},
 		},
@@ -87,7 +88,7 @@ app.post("/detectText", upload.array("image", 1), (req, res) => {
     var params = {
 		Image: {
 			S3Object: {
-				Bucket: 'rekognitionbucket18',
+				Bucket: bucketName,
 				Name: req.file,
 			},
 		},
@@ -97,7 +98,7 @@ app.post("/detectText", upload.array("image", 1), (req, res) => {
 		if (err) console.log(err, err.stack);
 		
 		else{
-			//console.log(data);
+			console.log(data);
 			res.send({data: data});
 		} 
 	});
