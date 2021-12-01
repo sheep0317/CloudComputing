@@ -131,21 +131,22 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         for (let i = 0; i < result01.length; i++) {
             //get color
             var color = {
-                red = getRandomInt(255),
-                green = getRandomInt(255),
-                blue = getRandomInt(255)
+                red: getRandomInt(255),
+                green: getRandomInt(255),
+                blue: getRandomInt(255)
             }
+            console.log(color);
             var face = result01[i].Face.BoundingBox;
             //print name face
-            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name: ${result01[i].Name} </span><br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name: ${result01[i].Name} </span><br>`
 
             //print Bio Link
             data.innerHTML += `<br>`
             var urls = result01[i].Urls
             
-            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Urls: <br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Urls: <br>`
             for (let k = 0; k < urls.length; k++) {
-                data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}">${urls[k]}</span><br>`
+                data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})">${urls[k]}</span><br>`
             }
             //draw box
             var image = document.getElementById("image")
@@ -154,21 +155,22 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
                                                             width: ${face.Width * image.width}px;
                                                             top: ${face.Top * image.height}px; 
                                                             left: ${face.Left * image.width}px;
-                                                            border: 2px solid rbg(${color.red}, ${color.blue}, ${color.green}"> </div> `
+                                                            border: 2px solid rgb(${color.red}, ${color.blue}, ${color.green})"> </div> `
         }
         //UnrecognizedFaces
         for (let i = 0; i < result02.length; i++) {
             //get color
             var color = {
-                red = getRandomInt(255),
-                green = getRandomInt(255),
-                blue = getRandomInt(255)
+                red: getRandomInt(255),
+                green: getRandomInt(255),
+                blue: getRandomInt(255)
             }
+            console.log(color);
             var box = result02[i].BoundingBox;
-            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name:  UnrecognizedFaces </span><br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name:  UnrecognizedFaces </span><br>`
 
             data.innerHTML += `<br>`
-            
+
             //draw box
             var image = document.getElementById("image")
             boudiry.innerHTML += `<div class="boudiry" style="display: block;
@@ -176,7 +178,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
                                                             width: ${box.Width * image.width}px;
                                                             top: ${box.Top * image.height}px; 
                                                             left: ${box.Left * image.width}px;
-                                                            border: 2px solid rbg(${color.red}, ${color.blue}, ${color.green}"> </div> `
+                                                            border: 2px solid rgb(${color.red}, ${color.blue}, ${color.green})"> </div> `
         }
     });
 })
