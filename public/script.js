@@ -167,7 +167,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
             }
             console.log(color);
             var box = result02[i].BoundingBox;
-            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name:  UnrecognizedFaces </span><br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name:  UnrecognizedFacesCeleb </span><br>`
 
             data.innerHTML += `<br>`
 
