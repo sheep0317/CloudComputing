@@ -131,9 +131,9 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         for (let i = 0; i < result01.length; i++) {
             //get color
             var color = {
-                red = getRandomInt(255),
-                green = getRandomInt(255),
-                blue = getRandomInt(255)
+                red : getRandomInt(255),
+                green : getRandomInt(255),
+                blue : getRandomInt(255)
             }
             var face = result01[i].Face.BoundingBox;
             //print name face
@@ -160,12 +160,12 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         for (let i = 0; i < result02.length; i++) {
             //get color
             var color = {
-                red = getRandomInt(255),
-                green = getRandomInt(255),
-                blue = getRandomInt(255)
+                red : getRandomInt(255),
+                green : getRandomInt(255),
+                blue : getRandomInt(255)
             }
             var box = result02[i].BoundingBox;
-            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name:  UnrecognizedFaces </span><br>`
+            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name:  UnrecognizedFacesCeleb </span><br>`
 
             data.innerHTML += `<br>`
             
