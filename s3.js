@@ -10,9 +10,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 aws.config.update({
-    accessKeyId: 'ASIAQQK3445LITPXV44G',
-    secretAccessKey: 'viIbRrS2hjJd/kLZPrC9MD/XOYutJZegElKDbI8t',
-    sessionToken: 'FwoGZXIvYXdzEL3//////////wEaDOjiAxgMBcqe8RX/UyLPAVqp/Fn9496nEx6uJp9FElP9M0y/ouNGNoLZiyDmBAdjk+5gTLFqrgiczVuuDLgsSt25JKxBLdHApwZUlSr4xLSI4hFfcH/XjgEffa2KP8t9+wE8Rvv8rGnmxvgChNkLOUlu3pwB/495+1tN2nP6q+iew5TVK6yEanlc2Te5neJuiBCfqp1rEH24zCTo73JFe2k0fQlQA+MeKW3jpN+LjwculepsQkTIvLBd8BbuPfL+N0PrmTLm7yF92KgO+1SZzqXYgQbJJxskMB5ptB6U0Sii5v2MBjItHon9cW7HSb4XZAKfjCifuPlqK4emZr/9OCGsic5EXuLNt2q/v1yNK00XcN/v',
+    accessKeyId: 'ASIAQQK3445LI5NNRMBK',
+    secretAccessKey: 'Dt0qzGyYwtpRQNCIs0aO3rw7xa72lIhonw3Z4G9p',
+    sessionToken: 'FwoGZXIvYXdzEE8aDBXWlVIph1mPGldUmiLPAWWVQKlZ2NsVQ8KwbGQApczfKa1YLsD6JmWBkpY/8WmYmD9fJW6O5ZGIq5n6ppejrP17zgfKP9MS9VPCaXAITPWE+yw51TSQBA5XoqEjnaMqrA944G+j/3vHYH5dXPiYk2JRbcVDJCznwqNd99yTKAmHm+I80gg7jtoSPZobYmEE4di6giDl4VNItHFR+yWgqp1o2RsHozNdvVShGnagKCwVkM+IVbMcblKCGEHq/9BPXNg+G1JG+RHbpRADxe6AjmQDiI49QKKmZI05G4vYfCi1+52NBjItoDp7kPBTTOREY+TxMMRKXf1txyF3x7va9sLqnWd0l6dWUblzzjSRbFZc9sri',
     region: 'us-east-1',
     signatureVersion: 'v4',
 });
@@ -103,7 +103,25 @@ app.post("/detectText", upload.array("image", 1), (req, res) => {
 		} 
 	});
 })
-
+app.post("/rekogCeleb", upload.array("image", 1), (req, res) => {
+    var params = {
+		Image: {
+			S3Object: {
+				Bucket: bucketName,
+				Name: req.file,
+			},
+		},
+	};
+	console.log(req.file);
+	rekognition.recognizeCelebrities(params, function (err, data) {
+		if (err) console.log(err, err.stack);
+		
+		else{
+			console.log(data);
+			res.send({data: data});
+		} 
+	});
+})
 
 
 app.use(express.static("public"));

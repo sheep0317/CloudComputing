@@ -52,7 +52,7 @@ document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
         },
         data: fd,
     }).then(res => {
-        
+
         const result = res.data.data.FaceDetails;
         console.log(result);
         var image = document.getElementById("image")
@@ -102,6 +102,44 @@ document.getElementById("btnDetectText").addEventListener("click", (e) => {
                                                             width: ${geometry.Width * image.width}px;
                                                             top: ${geometry.Top * image.height}px; 
                                                             left: ${geometry.Left * image.width}px;"> </div> `
+        }
+    });
+})
+document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
+    e.preventDefault();
+    // let file = docsument.getElementsByTagName("input")[0].files[0];
+    const fd = new FormData();
+
+    fd.append("image", fileImage);
+    axios({
+        url: "/rekogCeleb",
+        method: "post",
+        headers: {
+            'content-type': 'multipart/form-data'
+        },
+        data: fd,
+    }).then(res => {
+        var result = res.data.data.CelebrityFaces;
+        console.log(result);
+        var data = document.getElementById("data");
+        var boudiry = document.getElementById("image-container");
+        data.innerHTML = ""
+        for (let i = 0; i < result.length; i++) {
+            var face = result[i].Face.BoundingBox;
+            data.innerHTML += `<span> Name: ${result[i].Name} </span><br>`
+
+            data.innerHTML += `<br>`
+            var urls = result[i].Urls
+            data.innerHTML += `<span> Urls: <br>`
+            for (let k = 0; k < urls.length; k++) {
+                data.innerHTML += `<span>${urls[k]}</span><br>`
+            }
+            var image = document.getElementById("image")
+            boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                            height:${face.Height * image.height}px; 
+                                                            width: ${face.Width * image.width}px;
+                                                            top: ${face.Top * image.height}px; 
+                                                            left: ${face.Left * image.width}px;"> </div> `
         }
     });
 })
