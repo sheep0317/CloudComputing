@@ -8,8 +8,8 @@
 
 ```
 ```
-> docker build -t <image-name> . 
+docker build -t <image-name> . 
 ```
 ```
-> docker container run -p 8080:3000  <image-name>
+docker container run -p 8080:3000  <image-name>
 ```

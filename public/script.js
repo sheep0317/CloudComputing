@@ -105,6 +105,9 @@ document.getElementById("btnDetectText").addEventListener("click", (e) => {
         }
     });
 })
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
     e.preventDefault();
     // let file = docsument.getElementsByTagName("input")[0].files[0];
@@ -119,27 +122,61 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         },
         data: fd,
     }).then(res => {
-        var result = res.data.data.CelebrityFaces;
-        console.log(result);
+        var result01 = res.data.data.CelebrityFaces;
+        var result02 = res.data.data.UnrecognizedFaces;
         var data = document.getElementById("data");
         var boudiry = document.getElementById("image-container");
         data.innerHTML = ""
-        for (let i = 0; i < result.length; i++) {
-            var face = result[i].Face.BoundingBox;
-            data.innerHTML += `<span> Name: ${result[i].Name} </span><br>`
-
-            data.innerHTML += `<br>`
-            var urls = result[i].Urls
-            data.innerHTML += `<span> Urls: <br>`
-            for (let k = 0; k < urls.length; k++) {
-                data.innerHTML += `<span>${urls[k]}</span><br>`
+        //CelebrityFaces
+        for (let i = 0; i < result01.length; i++) {
+            //get color
+            var color = {
+                red = getRandomInt(255),
+                green = getRandomInt(255),
+                blue = getRandomInt(255)
             }
+            var face = result01[i].Face.BoundingBox;
+            //print name face
+            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name: ${result01[i].Name} </span><br>`
+
+            //print Bio Link
+            data.innerHTML += `<br>`
+            var urls = result01[i].Urls
+            
+            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Urls: <br>`
+            for (let k = 0; k < urls.length; k++) {
+                data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}">${urls[k]}</span><br>`
+            }
+            //draw box
             var image = document.getElementById("image")
             boudiry.innerHTML += `<div class="boudiry" style="display: block;
                                                             height:${face.Height * image.height}px; 
                                                             width: ${face.Width * image.width}px;
                                                             top: ${face.Top * image.height}px; 
-                                                            left: ${face.Left * image.width}px;"> </div> `
+                                                            left: ${face.Left * image.width}px;
+                                                            border: 2px solid rbg(${color.red}, ${color.blue}, ${color.green}"> </div> `
+        }
+        //UnrecognizedFaces
+        for (let i = 0; i < result02.length; i++) {
+            //get color
+            var color = {
+                red = getRandomInt(255),
+                green = getRandomInt(255),
+                blue = getRandomInt(255)
+            }
+            var box = result02[i].BoundingBox;
+            data.innerHTML += `<span style = "color: rbg(${color.red}, ${color.blue}, ${color.green}"> Name:  UnrecognizedFaces </span><br>`
+
+            data.innerHTML += `<br>`
+            
+            //draw box
+            var image = document.getElementById("image")
+            boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                            height:${box.Height * image.height}px; 
+                                                            width: ${box.Width * image.width}px;
+                                                            top: ${box.Top * image.height}px; 
+                                                            left: ${box.Left * image.width}px;
+                                                            border: 2px solid rbg(${color.red}, ${color.blue}, ${color.green}"> </div> `
         }
     });
 })
