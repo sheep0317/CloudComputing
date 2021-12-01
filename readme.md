@@ -7,3 +7,9 @@
 > index.js: đầu tiên lên aws S3 tạo 1 cái Xô (Bucket) sau đó up hình lên. Trong file index ấy nameFile thì đổi thành tên cái muốn check, kéo xuống trong param thì có cái Bucket ấy đổi lại cái nãy tạo nha ^^
 
 ```
+```
+> docker build -t <image-name> . 
+```
+```
+> docker container run -p 8080:3000  <image-name>
+```
