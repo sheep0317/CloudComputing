@@ -54,7 +54,7 @@ document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
     }).then(res => {
 
         const result = res.data.data.FaceDetails;
-        console.log(result);
+        console.log(res);
         var image = document.getElementById("image")
         var boudiry = document.getElementById("image-container");
 
@@ -122,6 +122,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         },
         data: fd,
     }).then(res => {
+        console.log(res);
         var result01 = res.data.data.CelebrityFaces;
         var result02 = res.data.data.UnrecognizedFaces;
         var data = document.getElementById("data");

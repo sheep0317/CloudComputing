@@ -10,15 +10,15 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 aws.config.update({
-    accessKeyId: 'ASIAQQK3445LI5NNRMBK',
-    secretAccessKey: 'Dt0qzGyYwtpRQNCIs0aO3rw7xa72lIhonw3Z4G9p',
-    sessionToken: 'FwoGZXIvYXdzEE8aDBXWlVIph1mPGldUmiLPAWWVQKlZ2NsVQ8KwbGQApczfKa1YLsD6JmWBkpY/8WmYmD9fJW6O5ZGIq5n6ppejrP17zgfKP9MS9VPCaXAITPWE+yw51TSQBA5XoqEjnaMqrA944G+j/3vHYH5dXPiYk2JRbcVDJCznwqNd99yTKAmHm+I80gg7jtoSPZobYmEE4di6giDl4VNItHFR+yWgqp1o2RsHozNdvVShGnagKCwVkM+IVbMcblKCGEHq/9BPXNg+G1JG+RHbpRADxe6AjmQDiI49QKKmZI05G4vYfCi1+52NBjItoDp7kPBTTOREY+TxMMRKXf1txyF3x7va9sLqnWd0l6dWUblzzjSRbFZc9sri',
+    accessKeyId: 'ASIAX3ACOSCI5MMKT2GN',
+    secretAccessKey: 'XmQNfTUTis72FDtS1pQ/vN/2c3jWAA0d6qHO6HgE',
+    sessionToken: 'FwoGZXIvYXdzEGMaDKEdeSLwf44EsMPsfSLPAR9hDcUU2gzETmfq5OvXjjUI60bFUWRwy7XXXEufoZVKlZlvYV5wGUR+GMNozqbHP0xin7QnJ5n1ijf4f7A1ayrMlxmvAoBhyAisbX+/8yUvMjXouC3i1J0p+C5nJQro9HDZE8STIro9ELGchdpjoy060bPDUQqgIk8PaIFtzvWbHDjFnKycmCNTa4YQu+IOJ6jJPl2XYKGc0m++29h9KWaNNlTShCG3/DpLJ/t7mrp6a9omyvmEBP/0Q4Vkad7YVxM6aEoImX2VTbdqFLHiGyiyrKKNBjIt6h8L1PsVdd7k9zrc6LJjpIknToE7jok1cwsGI70bLjrkWfSLUbPrVeKyPCYO',
     region: 'us-east-1',
     signatureVersion: 'v4',
 });
 
 const s3 = new aws.S3({});
-const bucketName = 'rekognitionbucket18';
+const bucketName = 'rekognitionbucket1801';
 
 const upload = multer({
     fileFilter: (req, file, cb) => {
@@ -79,6 +79,7 @@ app.post("/detectFace", upload.array("image", 1), (req, res) => {
 		if (err) console.log(err, err.stack);
 		
 		else{
+			console.log(data);
 			res.send({data: data});
 		} 
 	});
