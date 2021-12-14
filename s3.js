@@ -5,15 +5,16 @@ const multerS3 = require("multer-s3");
 const multer = require("multer");
 const aws = require("aws-sdk");
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 aws.config.update({
-    accessKeyId: 'ASIAX3ACOSCI5MMKT2GN',
-    secretAccessKey: 'XmQNfTUTis72FDtS1pQ/vN/2c3jWAA0d6qHO6HgE',
-    sessionToken: 'FwoGZXIvYXdzEGMaDKEdeSLwf44EsMPsfSLPAR9hDcUU2gzETmfq5OvXjjUI60bFUWRwy7XXXEufoZVKlZlvYV5wGUR+GMNozqbHP0xin7QnJ5n1ijf4f7A1ayrMlxmvAoBhyAisbX+/8yUvMjXouC3i1J0p+C5nJQro9HDZE8STIro9ELGchdpjoy060bPDUQqgIk8PaIFtzvWbHDjFnKycmCNTa4YQu+IOJ6jJPl2XYKGc0m++29h9KWaNNlTShCG3/DpLJ/t7mrp6a9omyvmEBP/0Q4Vkad7YVxM6aEoImX2VTbdqFLHiGyiyrKKNBjIt6h8L1PsVdd7k9zrc6LJjpIknToE7jok1cwsGI70bLjrkWfSLUbPrVeKyPCYO',
-    region: 'us-east-1',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN,
+    region: process.env.AWS_REGION,
     signatureVersion: 'v4',
 });
 
@@ -65,6 +66,119 @@ app.post("/detectLabel", upload.array("image", 1), (req, res) => {
 	});
 })
 
+app.post("/detectTest", upload.array("image", 1), (req, res) => {
+    //res.redirect(req.file.location);
+    //res.send({ file: req.file });
+	let theFinalResult = [];
+    var params = {
+		Image: {
+			S3Object: {
+				Bucket: bucketName,
+				Name: req.file,
+			},
+		},
+		MinConfidence: 80,
+	};
+	rekognition.detectLabels(params, function (err, data) {
+		if (err) console.log(err, err.stack);
+		else {
+			labelData = data.Labels;
+			console.log(labelData);
+			finalResult = {
+				text: {},
+				celebrities: {},
+			}
+			let textFlag = false;
+			let personFlag = false;
+			let posterFlag = false;
+			for (let i = 0; i < labelData.length; i++) {
+				if (labelData[i].Name === "Text"){textFlag = true; continue;} 
+				if (labelData[i].Name === "Page") {textFlag = true; continue;} 
+				if (labelData[i].Name === "Paper") {textFlag = true; continue;} 
+				if (labelData[i].Name === "Person") {personFlag = true; continue;} 
+				if (labelData[i].Name === "Human") {personFlag = true; continue;} 
+				if (labelData[i].Name === "Face") {personFlag = true; continue;} 
+				if (labelData[i].Name === "Poster") {textFlag = true; continue;} 
+				
+			}
+			if (textFlag && personFlag) {
+				posterFlag = true;
+				textFlag = false;
+				personFlag = false;
+			} 
+			console.log(textFlag);
+			console.log(personFlag);
+			console.log(posterFlag);
+			
+			if (textFlag) {
+				textResult = {}
+				textParam = {
+					Image: {
+						S3Object: {
+							Bucket: bucketName,
+							Name: req.file,
+						},
+					},
+				}
+				rekognition.detectText(textParam, function (err, data) {
+					if (err) console.log(err, err.stack);
+					
+					else{
+						finalResult.text = data;
+						finalResult.celebrities = null;
+						res.send({data: finalResult});
+					} 
+				});
+			}
+			if (personFlag) {
+				personParam = {
+					Image: {
+						S3Object: {
+							Bucket: bucketName,
+							Name: req.file,
+						},
+					},
+				}
+				rekognition.recognizeCelebrities(personParam, function (err, data) {
+					if (err) console.log(err, err.stack);
+					
+					else{
+						finalResult.text = null;
+						finalResult.celebrities = data;
+						res.send({data: finalResult});
+					} 
+				});
+			}
+			if (posterFlag) {
+				posterResult = {}
+				posterParam = {
+					Image: {
+						S3Object: {
+							Bucket: bucketName,
+							Name: req.file,
+						},
+					},
+				}
+				rekognition.detectText(posterParam, function (err, data) {
+					if (err) console.log(err, err.stack);
+					else{
+						finalResult.text = data;
+						rekognition.recognizeCelebrities(posterParam, function (err, data) {
+							if (err) console.log(err, err.stack);
+							
+							else{
+								console.log(typeof data);
+								finalResult.celebrities = data;
+								console.log(typeof posterResult);
+								res.send({data: finalResult});
+							} 
+						});
+					} 
+				});
+			}
+		}
+	});
+})
 app.post("/detectFace", upload.array("image", 1), (req, res) => {
     var params = {
 		Image: {
@@ -95,15 +209,18 @@ app.post("/detectText", upload.array("image", 1), (req, res) => {
 		},
 	};
 	//console.log(req.file);
+	textDetection(params, res);
+})
+function textDetection (params, res){
 	rekognition.detectText(params, function (err, data) {
 		if (err) console.log(err, err.stack);
 		
 		else{
-			//console.log(data);
+			console.log(data);
 			res.send({data: data});
 		} 
 	});
-})
+}
 app.post("/rekogCeleb", upload.array("image", 1), (req, res) => {
     var params = {
 		Image: {
@@ -118,7 +235,7 @@ app.post("/rekogCeleb", upload.array("image", 1), (req, res) => {
 		if (err) console.log(err, err.stack);
 		
 		else{
-			console.log(data);
+			console.log(data.CelebrityFaces);
 			res.send({data: data});
 		} 
 	});

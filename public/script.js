@@ -21,7 +21,6 @@ document.getElementById("btnDetectLabel").addEventListener("click", (e) => {
     }).then(res => {
         //console.log(res.data.data.Labels);
         var result = res.data.data.Labels;
-        console.log(result);
         var data = document.getElementById("data");
         data.innerHTML = ""
         for (let i = 0; i < result.length; i++) {
@@ -54,7 +53,6 @@ document.getElementById("btnDetectFaces").addEventListener("click", (e) => {
     }).then(res => {
 
         const result = res.data.data.FaceDetails;
-        console.log(res);
         var image = document.getElementById("image")
         var boudiry = document.getElementById("image-container");
 
@@ -87,7 +85,6 @@ document.getElementById("btnDetectText").addEventListener("click", (e) => {
         data: fd,
     }).then(res => {
         var result = res.data.data.TextDetections;
-        console.log(result);
         var data = document.getElementById("data");
         var boudiry = document.getElementById("image-container");
         data.innerHTML = ""
@@ -122,9 +119,36 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
         },
         data: fd,
     }).then(res => {
-        console.log(res);
-        var result01 = res.data.data.CelebrityFaces;
-        var result02 = res.data.data.UnrecognizedFaces;
+        celesDraw(res.data.data);
+        
+    });
+})
+
+document.getElementById("btnTest").addEventListener("click", (e) => {
+    e.preventDefault();
+    // let file = document.getElementsByTagName("input")[0].files[0];
+    const fd = new FormData();
+
+    fd.append("image", fileImage);
+    axios({
+        url: "/detectTest",
+        method: "post",
+        headers: {
+        },
+        data: fd,
+    }).then(res => {
+        console.log(res.data);
+        if(res.data.data.celebrities != null){
+            celesDraw(res.data.data.celebrities);
+        }
+        if (res.data.data.text != null) {
+            textDraw(res.data.data.text);
+        }
+    });
+})
+function celesDraw(result) {
+    var result01 = result.CelebrityFaces;
+        var result02 = result.UnrecognizedFaces;
         var data = document.getElementById("data");
         var boudiry = document.getElementById("image-container");
         data.innerHTML = ""
@@ -139,7 +163,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
             console.log(color);
             var face = result01[i].Face.BoundingBox;
             //print name face
-            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name: ${result01[i].Name} </span><br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name: ${result01[i].Name} </span>`
 
             //print Bio Link
             data.innerHTML += `<br>`
@@ -149,6 +173,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
             for (let k = 0; k < urls.length; k++) {
                 data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})">${urls[k]}</span><br>`
             }
+            data.innerHTML += `<br>`
             //draw box
             var image = document.getElementById("image")
             boudiry.innerHTML += `<div class="boudiry" style="display: block;
@@ -157,6 +182,7 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
                                                             top: ${face.Top * image.height}px; 
                                                             left: ${face.Left * image.width}px;
                                                             border: 2px solid rgb(${color.red}, ${color.blue}, ${color.green})"> </div> `
+           
         }
         //UnrecognizedFaces
         for (let i = 0; i < result02.length; i++) {
@@ -166,9 +192,8 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
                 green: getRandomInt(255),
                 blue: getRandomInt(255)
             }
-            console.log(color);
             var box = result02[i].BoundingBox;
-            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name:  UnrecognizedFacesCeleb </span><br>`
+            data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Name:  UnrecognizedFacesCeleb </span>`
 
             data.innerHTML += `<br>`
 
@@ -181,6 +206,23 @@ document.getElementById("btnRekogCeleb").addEventListener("click", (e) => {
                                                             left: ${box.Left * image.width}px;
                                                             border: 2px solid rgb(${color.red}, ${color.blue}, ${color.green})"> </div> `
         }
-    });
-})
-
+}
+function textDraw(kq){
+    var result = kq.TextDetections;
+    var data = document.getElementById("data");
+    var boudiry = document.getElementById("image-container");
+    data.innerHTML += `<br><br>Text Detections: <br>`
+    for (let i = 0; i < result.length; i++) {
+        var geometry = result[i].Geometry.BoundingBox;
+        data.innerHTML += `<span> DetectText: ${result[i].DetectedText} </span><br>
+                            <span> Type: ${result[i].Type}</span>`
+        data.innerHTML += `<br><br>`
+        var image = document.getElementById("image")
+        boudiry.innerHTML += `<div class="boudiry" style="display: block;
+                                                        height:${geometry.Height * image.height}px; 
+                                                        width: ${geometry.Width * image.width}px;
+                                                        top: ${geometry.Top * image.height}px; 
+                                                        left: ${geometry.Left * image.width}px;
+                                                        border: 2px solid white"> </div> `
+    }
+}

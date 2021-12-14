@@ -9,34 +9,21 @@ h2{
     margin-bottom: 5px;
 }
 .title {
-    background-color: #52C6C6;
+    background-color: #0439D9;
+    color: #fff;
     height: 70px;
     margin-top: 15px;
     padding-top: 15px;
 }
 .col-6{
-    background-color: #F0F0F0;
-    border: 1px solid black;
     padding: 20px;
+    border: 1px solid black;
 }
-.col-6 div{
-    background-color: #FFF;
-    height: 100%;
-    width: 100%;
-    padding: 20px 10px;
-}
+
 #imageInput{
     margin-right: 30px;
 }
-button{
-    padding: 5px 20px;
-    border: none;
-    border-radius: 5px!important;
-    background-color: #C4C4C4;
-}
-button:hover{
-    background-color: #b3b3b3;
-}
+
 img{
     max-height: 48vw;
     max-width: 100%;
@@ -45,9 +32,7 @@ img{
     min-height: 400px;
     min-width: 400px;
 }
-#data{
-    height: 90%;
-}
+
 #image-container{
     position: relative;
     margin: 0;
@@ -65,4 +50,52 @@ img{
     background-color: transparent!important;
     display: none;
 
+}
+#data{
+    height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.wrap{
+    display: flex;
+    flex-direction: row;
+}
+.image-upload{
+    margin-right: 30px;
+}
+button#btnTest{
+    background-color: #0439D9;
+    color: white;
+    width: 150px;
+    height: 60px;
+    border: none;
+    box-shadow: 2px 2px 2px #2573D9;
+    border-radius: 10px 0 0 10px;
+    border-right: 2px #2573D9 solid;
+}
+button#btnTest:hover{
+    background-color: #5990D9;
+    color: black;
+}
+button.ddbutton{
+    background-color: #0439D9;
+    color: white;
+    border: none;
+    height: 60px;
+    box-shadow: 2px 2px 2px #2573D9;
+    border-radius: 0px 10px 10px 0px;
+    margin-right: 20px;
+}
+button.ddbutton:hover{
+    background-color: #5990D9;
+    color: black;
+}
+button.ref{
+    background-color: #0439D9;
+    color: white;
+    border: none;
+    height: 60px;
+    box-shadow: 2px 2px 2px #2573D9;
+    border-radius:5px;
+    margin-right: 20px;
 }

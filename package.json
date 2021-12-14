@@ -2,7 +2,7 @@
   "name": "cloudcomputing",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "s3.js",
   "scripts": {
     "start": "nodemon s3.js",
     "test": "echo \"Error: no test specified\" && exit 1"
