@@ -14,7 +14,8 @@
   - Vào trang service EC2, tạo một instance
   - Sử dụng Public DNS để connect instance trong terminal
   - Tải website lên instance bằng lệnh _**git clone https://github.com/sheep0317/CloudComputing**_
-  - Cd đến thư mục website vừa tải và chạy file bằng lệnh: _**npm start**_
+  - Cd đến thư mục website vừa tải: _**cd CloudComputing**_
+  - chạy file bằng lệnh: _**npm start**_
   - Quay lại trang EC2 để lấy Public DNS 
   - Mở trình duyệt dán Public DNS và vào cổng 3000. Ví dụ: http://ec2-18-208-132-170.compute-1.amazonaws.com:3000/
 
