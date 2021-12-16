@@ -171,7 +171,7 @@ function celesDraw(result) {
             
             data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"> Urls: <br>`
             for (let k = 0; k < urls.length; k++) {
-                data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})">${urls[k]}</span><br>`
+                data.innerHTML += `<span style = "color: rgb(${color.red}, ${color.blue}, ${color.green})"><a href= "https://${urls[k]}" target="_blank">${urls[k]}</a></span><br>`
             }
             data.innerHTML += `<br>`
             //draw box
